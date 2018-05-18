@@ -1,11 +1,16 @@
 const express = require("express"),
       morgan = require("morgan"),
       bodyParser = require("body-parser"),
-      mongoose = require("mongoose");
+      cors = require("cors");
+
+const connectionToDb = require("./database/connectionToDatabase");
+
+
 
 let app = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended:false}));
+app.use(cors());
 app.use(morgan("dev"));
 let PORT = process.env.PORT || 3000;
 
