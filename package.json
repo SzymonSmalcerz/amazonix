@@ -1,0 +1,11 @@
+{
+  "name": "amazonix",
+  "version": "1.0.0",
+  "description": "amazon clone",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Szymon Smalcerz",
+  "license": "ISC"
+}
