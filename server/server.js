@@ -3,7 +3,8 @@ const express = require("express"),
       bodyParser = require("body-parser"),
       cors = require("cors");
 
-const connectionToDb = require("./database/connectionToDatabase");
+const connectionToDb = require("./database/connectionToDatabase"),
+      accountRouter = require("./routes/accountRouter");
 
 
 
@@ -12,6 +13,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended:false}));
 app.use(cors());
 app.use(morgan("dev"));
+app.use("/account",accountRouter);
 let PORT = process.env.PORT || 3000;
 
 app.get("*", (req,res,next) => {
