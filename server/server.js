@@ -4,7 +4,8 @@ const express = require("express"),
       cors = require("cors");
 
 const connectionToDb = require("./database/connectionToDatabase"),
-      accountRouter = require("./routes/accountRouter");
+      accountRouter = require("./routes/accountRouter"),
+      productsRouter = require("./routes/productsRouter");
 
 
 
@@ -14,6 +15,7 @@ app.use(bodyParser.urlencoded({extended:false}));
 app.use(cors());
 app.use(morgan("dev"));
 app.use("/account",accountRouter);
+app.use("/products",productsRouter);
 let PORT = process.env.PORT || 3000;
 
 app.get("*", (req,res,next) => {
