@@ -29,6 +29,7 @@ router.route("/products")
           let products = await productModel.find({owner : req.userData._id})
                                 .populate("owner")
                                 .populate("category")
+                                .populate("reviews")
                                 .exec();
           res.json({
             message : "success",
