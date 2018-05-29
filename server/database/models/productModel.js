@@ -12,7 +12,10 @@ const productSchema = new mongoose.Schema({
     ref : "user"
   },
   image : String,
-  title : String,
+  title : {
+    type : String,
+    default : "aaaaaTest"
+  },
   description : String,
   price : Number
 });
@@ -20,4 +23,4 @@ const productSchema = new mongoose.Schema({
 const productModel = mongoose.model("product",productSchema);
 
 
-module.exports = categoryModel;
+module.exports = productModel;
