@@ -20,12 +20,14 @@ app.use(morgan("dev"));
 const connectionToDb = require("./database/connectionToDatabase"),
       accountRouter = require("./routes/accountRouter"),
       productsRouter = require("./routes/productsRouter"),
-      sellerRouter = require("./routes/sellerRouter");
+      sellerRouter = require("./routes/sellerRouter"),
+      productsSearchRouter = require("./routes/productsSearchRouter");
 
 
 app.use("/account",accountRouter);
 app.use("/products",productsRouter);
 app.use("/seller",sellerRouter);
+app.use("/search",productsSearchRouter);
 let PORT = process.env.PORT || 3000;
 
 app.get("*", (req,res,next) => {

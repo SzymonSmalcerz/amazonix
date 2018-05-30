@@ -113,7 +113,6 @@ router.get("/", async(req,res) => {
 
 router.post("/review", authenticationMiddleware, async (req,res) => {
   try {
-    console.log(req.body);
     let product = await productModel.findById(req.body.productId);
     if(product){
       let review = new reviewModel();

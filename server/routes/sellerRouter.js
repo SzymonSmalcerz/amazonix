@@ -1,5 +1,6 @@
 const router = require("express").Router();
 
+const {_AMAZON} = require("../configuration/config");
 
 const productModel = require("../database/models/productModel"),
       authenticationMiddleware = require("../middlewares/authenticationMiddleware");
@@ -7,13 +8,13 @@ const productModel = require("../database/models/productModel"),
 const aws = require("aws-sdk"); // comunication with services
 const multer = require("multer"); // uploading images
 const multerS3 = require("multer-s3"); // uploading images directlu to s3 bucket
-const s3 = new aws.S3({ accessKeyId: "AKIAJDGWDD6HZ7JLSJBQ", secretAccessKey: "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" });
+const s3 = new aws.S3({ accessKeyId: _AMAZON.accessKeyId, secretAccessKey: _AMAZON.secretAccessKey });
 
 // creating a storage !!!!
 const upload = multer({
   storage : multerS3({
     s3 : s3, //connection to bucket
-    bucket : "tai-amazonix", //name of the bucket
+    bucket : _AMAZON.bucketName, //name of the bucket
     metadata : function(req,file,callback){ // information related to file
       callback(null,{fieldName : file.fieldname});
     },
