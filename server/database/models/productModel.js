@@ -16,13 +16,23 @@ const productSchema = new mongoose.Schema({
     ref : "review"
   }],
   image : String,
-  title : {
-    type : String,
-    default : "aaaaaTest"
-  },
+  title : String,
   description : String,
   price : Number
+},{
+  toObject : { virtuals : true },
+  toJSON : { virtuals : true }
 });
+
+productSchema.virtual("averageRating")
+             .get(function(){
+               let avgRating = 0;
+               let reviewsNum = this.reviews.length;
+               if(reviewsNum > 0){
+                 avgRating = this.reviews.reduce((t,v) => t+v.rating,0)/reviewsNum;
+               }
+               return avgRating;
+             });
 productSchema.plugin(deepPopulate);
 const productModel = mongoose.model("product",productSchema);
 
