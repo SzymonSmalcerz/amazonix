@@ -1,8 +1,11 @@
 const router = require("express").Router();
+const {_STRIPE} = require("../configuration/config");
+const stripe = require("stripe")(_STRIPE.secretKey);
 const categoryModel = require("../database/models/categoryModel"),
       productModel = require("../database/models/productModel"),
       reviewModel = require("../database/models/reviewModel"),
-      authenticationMiddleware = require("../middlewares/authenticationMiddleware");
+      orderModel = require("../database/models/orderModel");
+const authenticationMiddleware = require("../middlewares/authenticationMiddleware");
 
 
 router.route("/categories")
@@ -136,6 +139,48 @@ router.post("/review", authenticationMiddleware, async (req,res) => {
       value : e.toString()
     })
   }
+});
+
+router.post("/payment", authenticationMiddleware, (req,res) => {
+  const stripeToken = req.body.stripeToken;
+  const currentCharges = Math.round(req.body.totalPrice * 100);
+
+  stripe.customers
+    .create({
+      source : stripeToken.id
+    })
+    .then(function(customer){
+      return stripe.charges.create({
+        amount : currentCharges,
+        currency : "usd",
+        customer : customer.id
+      });
+    })
+    .then(async function(charge){
+      const products = req.body.products;
+
+      let order = new orderModel();
+      order.owner = req.userData._id;
+      order.totalPrice = currentCharges;
+
+      products.map(product => {
+        order.products.push({
+          product : product.product,
+          quantity : product.quantity
+        });
+      });
+
+      await order.save();
+      res.json({
+        message : "success",
+        value : order
+      });
+    }).catch(e => {
+      res.json({
+        message : "failure",
+        value : e.toString()
+      });
+    });
 });
 
 module.exports = router;

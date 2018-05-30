@@ -10,9 +10,14 @@ const _AMAZON = {
   accessKeyId: "AKIAJ2S4IKG6ILD57EZA",
   secretAccessKey: "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"
 };
+
+const _STRIPE = {
+  secretKey : "sk_test_z7wMI2nAfrMGQ866ddd1jhYz"
+};
 module.exports = {
   _DATABASE_URL,
   _SECRET,
   _ALGOLIA,
-  _AMAZON
+  _AMAZON,
+  _STRIPE
 }
