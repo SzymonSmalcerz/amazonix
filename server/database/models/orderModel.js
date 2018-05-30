@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const deepPopulate = require('mongoose-deep-populate')(mongoose);
 const {_ALGOLIA} = require("../../configuration/config");
 const orderSchema = new mongoose.Schema({
   owner : {
@@ -21,7 +22,7 @@ const orderSchema = new mongoose.Schema({
   }]
 });
 
-
+orderSchema.plugin(deepPopulate);
 const orderModel = mongoose.model("order",orderSchema);
 
 module.exports = orderModel;

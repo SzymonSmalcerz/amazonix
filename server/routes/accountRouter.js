@@ -1,7 +1,9 @@
 const router = require("express").Router();
 
 const userModel = require("../database/models/userModel"),
-      authenticationMiddleware = require("../middlewares/authenticationMiddleware");
+      orderModel = require("../database/models/orderModel");
+
+const authenticationMiddleware = require("../middlewares/authenticationMiddleware");
 
 router.post("/signup",(req,res) => {
   let newUser = new userModel();
@@ -19,6 +21,8 @@ router.post("/signup",(req,res) => {
     res.status(400).send(error);
   });
 });
+
+
 
 router.get("/secret",authenticationMiddleware,(req,res) => {
   res.send("now in secret :)");
@@ -57,5 +61,35 @@ router.route("/profile")
                  });
       });
 
+router.get("/orders",authenticationMiddleware,async (req,res) => {
+  try {
+    let orders = await orderModel.find({owner : req.userData._id}).deepPopulate("products.product").populate("owner").exec();
+    res.json({
+      message : "success",
+      value : orders
+    });
+  } catch(e) {
+    res.status(400).json({
+      message : "failure",
+      value : e.toString()
+    });
+  }
+});
+
+router.get("/orders/:id",authenticationMiddleware,async (req,res) => {
+  try {
+    let id = req.params.id;
+    let order = await orderModel.findById(id).deepPopulate("products.product.owner").populate("owner").exec();
+    res.json({
+      message : "success",
+      value : order
+    });
+  } catch(e) {
+    res.status(400).json({
+      message : "failure",
+      value : e.toString()
+    });
+  }
+});
 
 module.exports = router;
