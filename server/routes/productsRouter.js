@@ -58,12 +58,13 @@ router.get("/categories/:id",async (req,res) => {
                                       .populate("owner")
                                       .exec();
     let productsCount = await productModel.count({category : req.params.id});
-
+    let category = await categoryModel.findById(req.params.id);
     res.json({
-      message : "success",
+      success : true,
+      message : "you successfully fetched category",
       products : products,
-      categoryName : products[0].category.name,
-      productsCount : productsCount,
+      categoryName : category.name,
+      totalProducts : productsCount,
       pages : Math.ceil(productsCount / productsPerPage)
     });
   }  catch (e) {
@@ -75,12 +76,12 @@ router.get("/categories/:id",async (req,res) => {
 
 });
 
-router.get("/:id", async(req,res) => {
+router.get("/product/:id", async(req,res) => {
   try {
     let product = await productModel.findById(req.params.id).populate("owner").populate("category").deepPopulate("reviews.owner").exec();
     res.json({
       success : true,
-      message : product
+      product : product
     });
   } catch (e) {
     res.status(400).json({
@@ -91,7 +92,7 @@ router.get("/:id", async(req,res) => {
 });
 
 
-router.get("/", async(req,res) => {
+router.get("/products", async(req,res) => {
   try {
     let productsPerPage = 10;
     let pageNum = req.query.page || 0;

@@ -9,7 +9,7 @@ export class RestApiService {
 
   getHeaders() {
     const token = localStorage.getItem('token');
-    return token ? new HttpHeaders().set('Authorization', token) : null;
+    return token ? new HttpHeaders().set('authorization', token) : null;
   }
 
   get(link: string) {
