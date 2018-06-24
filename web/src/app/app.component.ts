@@ -1,20 +1,22 @@
 import { Component } from '@angular/core';
 
+import { Router } from '@angular/router';
+
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss']
+  styleUrls: ['./app.component.scss'],
 })
 export class AppComponent {
   searchTerm = '';
   isCollapsed = true;
 
-  // login token
+  constructor(private router: Router) {}
+
   get token() {
     return localStorage.getItem('token');
   }
 
-  // mobile menu collapse
   collapse() {
     this.isCollapsed = true;
   }
@@ -23,7 +25,10 @@ export class AppComponent {
     dropdown.close();
   }
 
-  logout() {}
+  logout() {
+    localStorage.clear();
+    this.router.navigate(['']);
+  }
 
   search() {}
 }

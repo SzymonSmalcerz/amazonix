@@ -9,26 +9,34 @@ import { FormsModule } from '@angular/forms'; //for controling forms in angular
 import { HttpClientModule } from '@angular/common/http'; //for http calls in angular
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap'; // for angular-boostrap
 
-import { RequestService } from './request.service';
+import { RestApiService } from './rest-api.service';
 import { DataService } from './data.service';
+import { AuthGuardService } from './auth-guard.service';
+
 import { HomeComponent } from './home/home.component';
 import { MessageComponent } from './message/message.component';
 import { RegistrationComponent } from './registration/registration.component';
+import { LoginComponent } from './login/login.component';
+import { ProfileComponent } from './profile/profile.component';
+import { SettingsComponent } from './settings/settings.component';
 @NgModule({
   declarations: [
     AppComponent,
     HomeComponent,
     MessageComponent,
-    RegistrationComponent
+    RegistrationComponent,
+    LoginComponent,
+    ProfileComponent,
+    SettingsComponent,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     NgbModule.forRoot(),
     FormsModule,
-    HttpClientModule
+    HttpClientModule,
   ],
-  providers: [RequestService,DataService],
-  bootstrap: [AppComponent]
+  providers: [RestApiService, DataService, AuthGuardService],
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}
