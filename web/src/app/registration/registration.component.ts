@@ -71,6 +71,8 @@ export class RegistrationComponent implements OnInit {
         );
         if (data['success']) {
           localStorage.setItem('token', data['token']);
+          console.log("TOOOOKEN BELOW :");
+          console.log(data['token']);
           this.data.success('Registration successful!');
         } else {
           this.data.error(data['message']);
