@@ -25,7 +25,7 @@ const connectionToDb = require("./database/connectionToDatabase"),
 
 
 app.use("/api/accounts",accountRouter);
-app.use("/api/products",productsRouter);
+app.use("/api",productsRouter);
 app.use("/api/seller",sellerRouter);
 app.use("/api/search",productsSearchRouter);
 let PORT = process.env.PORT || 3030;

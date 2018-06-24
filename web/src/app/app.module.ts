@@ -19,6 +19,9 @@ import { RegistrationComponent } from './registration/registration.component';
 import { LoginComponent } from './login/login.component';
 import { ProfileComponent } from './profile/profile.component';
 import { SettingsComponent } from './settings/settings.component';
+import { CategoriesComponent } from './categories/categories.component';
+import { PostProductComponent } from './post-product/post-product.component';
+import { MyProductsComponent } from './my-products/my-products.component';
 
 @NgModule({
   declarations: [
@@ -28,7 +31,10 @@ import { SettingsComponent } from './settings/settings.component';
     RegistrationComponent,
     LoginComponent,
     ProfileComponent,
-    SettingsComponent
+    SettingsComponent,
+    CategoriesComponent,
+    PostProductComponent,
+    MyProductsComponent
   ],
   imports: [
     BrowserModule,

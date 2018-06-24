@@ -19,7 +19,11 @@ const orderSchema = new mongoose.Schema({
       type : Number,
       default : 0
     }
-  }]
+  }],
+  created : {
+    type : Date,
+    default : Date.now
+  },
 });
 
 orderSchema.plugin(deepPopulate);

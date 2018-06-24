@@ -45,6 +45,6 @@ export class DataService {
       }
     } catch (e) {
       this.error(e);
-    }
-  }
-}
+    };
+  };
+};
