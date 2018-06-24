@@ -135,6 +135,7 @@ router.post("/review", authenticationMiddleware, async (req,res) => {
       await review.save();
       res.json({
         success : true,
+        message : "successfully added a review!",
         review : review
       });
     } else {
