@@ -5,18 +5,29 @@ const userModel = require("../database/models/userModel"),
 
 const authenticationMiddleware = require("../middlewares/authenticationMiddleware");
 
-router.post("/signup",(req,res) => {
+router.post("/signup",async (req,res) => {
   let newUser = new userModel();
   newUser.name = req.body.name;
   newUser.password = req.body.password;
   newUser.email = req.body.email;
   newUser.address = req.body.address;
+  let otherUser = await userModel.findIne({email : newUser.email});
+  if(otherUser){
+    res.json({
+      success : false,
+      message : "Account with this email already exists"
+    });
+    return;
+  };
   newUser.save().then(async (savedUser) => {
     savedUser.pictureUrl = savedUser.generateAvatar();
     await savedUser.save();
     savedUser.signToken();
     res.setHeader("authorization", savedUser.token);
-    res.send(savedUser);
+    res.json({
+      success : true,
+      message : savedUser
+    });
   }).catch(error => {
     res.status(400).send(error);
   });
@@ -35,7 +46,10 @@ router.post("/login", (req,res) => {
     else if(!foundUser.isPasswordValid(user.password)){throw new Error("incorrect password!")}
     foundUser.signToken();
     res.setHeader("authorization", foundUser.token);
-    res.send(foundUser);
+    res.json({
+      success : true,
+      message : foundUser
+    });
   }).catch(e => {
     res.status(400).send(e.toString());
   });

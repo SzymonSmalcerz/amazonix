@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { NavigationStart, Router } from '@angular/router';
-import { RequestService } from './request.service';
+import { RestApiService } from './rest-api.service';
 
 @Injectable({
   providedIn: 'root'
@@ -10,7 +10,7 @@ export class DataService {
   messageType = 'danger';
   user: any;
 
-  constructor(private router: Router, private request: RequestService) {
+  constructor(private router: Router, private request: RestApiService) {
     this.router.events.subscribe(event => {
       if (event instanceof NavigationStart) {
         this.message = '';
@@ -32,6 +32,4 @@ export class DataService {
     this.messageType = 'warning';
     this.message = message;
   }
-
-
 }
