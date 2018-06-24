@@ -43,11 +43,13 @@ export class LoginComponent implements OnInit {
           'http://localhost:3030/api/accounts/login',
           {
             email: this.email,
-            password: this.password,
+            password: this.password
           },
         );
         if (data['success']) {
           localStorage.setItem('token', data['token']);
+          console.log("TOKEN BEEELOWWWW:");
+          console.log(data['token']);
           this.router.navigate(['/']);
         } else {
           this.data.error(data['message']);

@@ -2,12 +2,12 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 
 import { AppRoutingModule } from './app-routing.module';
+
 import { AppComponent } from './app.component';
 
-//our imports:
-import { FormsModule } from '@angular/forms'; //for controling forms in angular
-import { HttpClientModule } from '@angular/common/http'; //for http calls in angular
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap'; // for angular-boostrap
+import { FormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 import { RestApiService } from './rest-api.service';
 import { DataService } from './data.service';
@@ -19,6 +19,7 @@ import { RegistrationComponent } from './registration/registration.component';
 import { LoginComponent } from './login/login.component';
 import { ProfileComponent } from './profile/profile.component';
 import { SettingsComponent } from './settings/settings.component';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -27,7 +28,7 @@ import { SettingsComponent } from './settings/settings.component';
     RegistrationComponent,
     LoginComponent,
     ProfileComponent,
-    SettingsComponent,
+    SettingsComponent
   ],
   imports: [
     BrowserModule,

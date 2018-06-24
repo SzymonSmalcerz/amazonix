@@ -24,11 +24,11 @@ const connectionToDb = require("./database/connectionToDatabase"),
       productsSearchRouter = require("./routes/productsSearchRouter");
 
 
-app.use("/account",accountRouter);
-app.use("/products",productsRouter);
-app.use("/seller",sellerRouter);
-app.use("/search",productsSearchRouter);
-let PORT = process.env.PORT || 3000;
+app.use("/api/accounts",accountRouter);
+app.use("/api/products",productsRouter);
+app.use("/api/seller",sellerRouter);
+app.use("/api/search",productsSearchRouter);
+let PORT = process.env.PORT || 3030;
 
 app.get("*", (req,res,next) => {
   res.send("XD");
