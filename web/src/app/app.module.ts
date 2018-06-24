@@ -13,19 +13,20 @@ import { RequestService } from './request.service';
 import { DataService } from './data.service';
 import { HomeComponent } from './home/home.component';
 import { MessageComponent } from './message/message.component';
+import { RegistrationComponent } from './registration/registration.component';
 @NgModule({
   declarations: [
     AppComponent,
     HomeComponent,
-    MessageComponent
+    MessageComponent,
+    RegistrationComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     NgbModule.forRoot(),
     FormsModule,
-    HttpClientModule,
-
+    HttpClientModule
   ],
   providers: [RequestService,DataService],
   bootstrap: [AppComponent]

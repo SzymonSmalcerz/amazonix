@@ -40,6 +40,10 @@ let userSchema = new mongoose.Schema({
     required : true,
     minlength : 5
   },
+  created : {
+    type : Date,
+    default : Date.now
+  },
   token : String
 });
 
@@ -66,7 +70,7 @@ userSchema.methods.signToken = function() {
 }
 
 userSchema.methods.generateAvatar = function(pictureSize){
-  if(!pictureSize){pictureSize = 200};
+  pictureSize = pictureSize || 200;
   var md5 = crypto.createHash("md5").update(this.email).digest("hex");
   return "http://gravatar.com/avatar/" + md5 + "?s" + pictureSize + "&d=retro";
 };
