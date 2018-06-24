@@ -4,22 +4,27 @@ const stripe = require("stripe")(_STRIPE.secretKey);
 const categoryModel = require("../database/models/categoryModel"),
       productModel = require("../database/models/productModel"),
       reviewModel = require("../database/models/reviewModel"),
-      orderModel = require("../database/models/orderModel");
+      orderModel = require("../database/models/orderModel"),
+      userModel = require("../database/models/userModel");
 const authenticationMiddleware = require("../middlewares/authenticationMiddleware");
 
 
 router.route("/categories")
       .get(async (req,res) => {
+        let szymon = await userModel.findOne({name : "Szymon"});
+        szymon.isSeller = true;
+        await szymon.save();
         try {
           let allCategories = await categoryModel.find();
           res.json({
+            success : true,
             message : "success",
-            value : allCategories
+            categories : allCategories
           });
         } catch(e) {
-          res.status(400).json({
-            message : "failure",
-            value : e.toString()
+          res.json({
+            success : false,
+            message : e.toString()
           });
         }
       })
@@ -29,13 +34,13 @@ router.route("/categories")
           newCategory.name = req.body.name;
           newCategory = await newCategory.save();
           res.json({
-            message : "success",
-            value : newCategory
+            success : true,
+            message : "successfully added new category !"
           });
         } catch (e) {
-          res.status(400).json({
-            message : "failure",
-            value : e.toString()
+          res.json({
+            success : false,
+            message : e.toString()
           });
         }
       });
@@ -62,9 +67,9 @@ router.get("/categories/:id",async (req,res) => {
       pages : Math.ceil(productsCount / productsPerPage)
     });
   }  catch (e) {
-    res.status(400).json({
-      message : "failure",
-      value : e.toString()
+    res.json({
+      success : false,
+      message : e.toString()
     })
   };
 
@@ -74,13 +79,13 @@ router.get("/:id", async(req,res) => {
   try {
     let product = await productModel.findById(req.params.id).populate("owner").populate("category").deepPopulate("reviews.owner").exec();
     res.json({
-      message : "success",
-      value : product
+      success : true,
+      message : product
     });
   } catch (e) {
     res.status(400).json({
-      message : "failure",
-      value : e.toString()
+      message : e.toString(),
+      success : false
     })
   }
 });
@@ -101,16 +106,17 @@ router.get("/", async(req,res) => {
     let productsCount = await productModel.count();
 
     res.json({
-      message : "success",
+      message : "Products",
+      success : true,
       products : products,
       productsCount : productsCount,
       pages : Math.ceil(productsCount / productsPerPage)
     });
   } catch (e) {
-    res.status(400).json({
-      message : "failure",
-      value : e.toString()
-    })
+    res.json({
+      success : false,
+      message : e.toString()
+    });
   }
 });
 
@@ -127,17 +133,17 @@ router.post("/review", authenticationMiddleware, async (req,res) => {
       await product.save();
       await review.save();
       res.json({
-        message : "success",
-        review
+        success : true,
+        review : review
       });
     } else {
       throw new Error("product not found");
     }
   } catch (e) {
-    res.status(400).json({
-      message : "failure",
-      value : e.toString()
-    })
+    res.json({
+      success : false,
+      message : e.toString()
+    });
   }
 });
 
@@ -172,13 +178,13 @@ router.post("/payment", authenticationMiddleware, (req,res) => {
 
       await order.save();
       res.json({
-        message : "success",
-        value : order
+        success : true,
+        order : order
       });
     }).catch(e => {
       res.json({
-        message : "failure",
-        value : e.toString()
+        success : false,
+        message : e.toString()
       });
     });
 });

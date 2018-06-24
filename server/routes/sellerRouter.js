@@ -3,6 +3,8 @@ const router = require("express").Router();
 const {_AMAZON} = require("../configuration/config");
 
 const productModel = require("../database/models/productModel"),
+      categoryModel = require("../database/models/categoryModel"),
+      userModel = require("../database/models/userModel"),
       authenticationMiddleware = require("../middlewares/authenticationMiddleware");
 
 const aws = require("aws-sdk"); // comunication with services
@@ -10,6 +12,7 @@ const multer = require("multer"); // uploading images
 const multerS3 = require("multer-s3"); // uploading images directlu to s3 bucket
 const s3 = new aws.S3({ accessKeyId: _AMAZON.accessKeyId, secretAccessKey: _AMAZON.secretAccessKey });
 
+const faker = require("faker");
 // creating a storage !!!!
 const upload = multer({
   storage : multerS3({
@@ -24,6 +27,33 @@ const upload = multer({
   })
 });
 
+router.get("/faker",async (req,res) => {
+  let user = await userModel.findOne({name : "Szymon"});
+  if(!user){
+    res.send("aaaaa");
+    return;
+  }
+  for(let i=0;i<10;i++){
+    let newCategory = new categoryModel();
+    newCategory.name = faker.commerce.department();
+    let otherCategory = await categoryModel.findOne({name : newCategory.name});
+    if(otherCategory){continue};
+    await newCategory.save();
+    for(let j=0;j<50;j++){
+      let newProduct = new productModel();
+      newProduct.category = newCategory._id;
+      newProduct.owner = user._id;
+      newProduct.image = faker.image.transport();
+      newProduct.title = faker.commerce.productName();
+      newProduct.description = faker.lorem.words();
+      newProduct.price = faker.commerce.price();
+      await newProduct.save();
+    };
+  };
+  res.send("populated");
+})
+
+
 router.route("/products")
       .get(authenticationMiddleware,async (req,res) => {
         try {
@@ -34,10 +64,11 @@ router.route("/products")
                                 .exec();
           res.json({
             message : "success",
-            value : products
+            products : products,
+            success : true
           })
         } catch (e) {
-          res.status(400).json({
+          res.json({
             message : "failure",
             value : e.toString()
           })
@@ -55,12 +86,13 @@ router.route("/products")
           product = await product.save();
           res.json({
             message : "success",
-            product
+            product : product,
+            success : true
           })
         } catch (e) {
-          res.status(400).json({
-            message : "failure",
-            value : e.toString()
+          res.json({
+            message : "Successfully added new product !",
+            success : false
           })
         }
       });
