@@ -38,7 +38,7 @@ export class CategoriesComponent implements OnInit {
     try {
       const data = await this.rest.post(
         'http://localhost:3030/api/categories',
-        { category: this.newCategory }
+        { name: this.newCategory }
       );
       data['success']
         ? this.data.success(data['message'])
