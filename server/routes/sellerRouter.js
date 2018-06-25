@@ -39,7 +39,7 @@ router.get("/faker",async (req,res) => {
     let otherCategory = await categoryModel.findOne({name : newCategory.name});
     if(otherCategory){continue};
     await newCategory.save();
-    for(let j=0;j<50;j++){
+    for(let j=0;j<20;j++){
       let newProduct = new productModel();
       newProduct.category = newCategory._id;
       newProduct.owner = user._id;

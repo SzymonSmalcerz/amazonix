@@ -1,19 +1,21 @@
-<section id="category">
+<section id="search">
   <div class="container p-3 p-md-5">
     <app-message></app-message>
-    <div *ngIf="!category" class="m-auto">
+    <div *ngIf="!content" class="m-auto">
       <h1 class="text-center display-3 mt-5">
         <i class="fa fa-spinner fa-spin"></i>
       </h1>
     </div>
-    <h3 *ngIf="category && !category.products.length" class="display-2 text-center mt-5">No Products inside Category</h3>
-    <div *ngIf="category && category.products.length">
-      <p>{{ lower }}-{{ upper }} of {{ category.totalProducts }} products in {{ category.categoryName }}</p>
+    <h3 *ngIf="content && !content.nbHits" class="display-2 text-center mt-5">No Results</h3>
+    <div *ngIf="content && content.nbHits">
+      <p>{{ lower }}-{{ upper }} of {{ content.nbHits }} results for
+        <span class="text-warning">"{{ query }}"</span>
+      </p>
       <hr>
-      <div class="product" *ngFor="let product of category.products">
+      <div class="product" *ngFor="let product of content.hits">
         <div class="row">
           <div class="col-5 col-md-2">
-            <a routerLink="/product/{{ product._id }}">
+            <a routerLink="/product/{{ product.objectID }}">
               <img [src]="product.image" alt="productImage" class="img-fluid img-thumbnail">
             </a>
           </div>
@@ -21,10 +23,10 @@
             <div class="row">
               <div class="col-12 col-md-6">
                 <h5>
-                  <a routerLink="/product/{{ product._id }}">{{ product.title }}</a>
+                  <a routerLink="/product/{{ product.objectID }}">{{ product.title }}</a>
                 </h5>
                 <p>
-                  <small class="text-muted">{{ product.category.id }}</small>
+                  <small>by {{ product.owner.name }}</small>
                 </p>
                 <p>{{ product.price | currency }}</p>
               </div>
@@ -36,7 +38,7 @@
         </div>
         <hr>
       </div>
-      <ngb-pagination [collectionSize]="category.totalProducts" [pageSize]="10" [(page)]="page" (pageChange)="getProducts($event)"></ngb-pagination>
+      <ngb-pagination [collectionSize]="content.nbHits" [pageSize]="20" [(page)]="page" (pageChange)="getProducts()"></ngb-pagination>
     </div>
   </div>
 </section>

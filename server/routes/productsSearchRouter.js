@@ -14,22 +14,24 @@ router.get("/",async (req,res) => {
       });
 
       res.json({
-        message : "success",
+        success : true,
+        message : "found some results",
         content : result,
-        searchKey : req.query.query
+        status : 200,
+        search_result : req.query.query
       });
 
     } catch(e) {
-      res.status(400).json({
-        message : "failure",
-        value : e.toString()
-      })
+      res.json({
+        success : false,
+        message : e.toString()
+      });
     }
   } else {
-    res.status(404).json({
-      message : "failure",
-      value : "query not present"
-    })
+    res.json({
+      success : false,
+      message : e.toString()
+    });
   }
 });
 

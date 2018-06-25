@@ -135,6 +135,7 @@ router.post("/review", authenticationMiddleware, async (req,res) => {
       await review.save();
       res.json({
         success : true,
+        message : "successfully added a review!",
         review : review
       });
     } else {
@@ -180,6 +181,7 @@ router.post("/payment", authenticationMiddleware, (req,res) => {
       await order.save();
       res.json({
         success : true,
+        message : "successfully made a payment!",
         order : order
       });
     }).catch(e => {
