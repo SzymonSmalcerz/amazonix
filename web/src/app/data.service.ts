@@ -10,6 +10,7 @@ export class DataService {
   messageType = 'danger';
 
   user: any;
+  cartItems = 0;
 
   constructor(private router: Router, private rest: RestApiService) {
     this.router.events.subscribe(event => {
@@ -40,11 +41,44 @@ export class DataService {
         const data = await this.rest.get(
           'http://localhost:3030/api/accounts/profile',
         );
+        console.log(data);
+        console.log("user needed");
         this.user = data['user'];
         console.log(this.user);
       }
     } catch (e) {
       this.error(e);
     }
+  }
+
+  getCart() {
+    const cart = localStorage.getItem('cart');
+    return cart ? JSON.parse(cart) : [];
+  }
+
+  addToCart(item: string) {
+    const cart: any = this.getCart();
+    if (cart.find(data => JSON.stringify(data) === JSON.stringify(item))) {
+      return false;
+    } else {
+      cart.push(item);
+      this.cartItems++;
+      localStorage.setItem('cart', JSON.stringify(cart));
+      return true;
+    }
+  }
+
+  removeFromCart(item: string) {
+    let cart: any = this.getCart();
+    if (cart.find(data => JSON.stringify(data) === JSON.stringify(item))) {
+      cart = cart.filter(data => JSON.stringify(data) !== JSON.stringify(item));
+      this.cartItems--;
+      localStorage.setItem('cart', JSON.stringify(cart));
+    }
+  }
+
+  clearCart() {
+    this.cartItems = 0;
+    localStorage.setItem('cart', '[]');
   }
 }

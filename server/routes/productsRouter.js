@@ -181,6 +181,7 @@ router.post("/payment", authenticationMiddleware, (req,res) => {
       await order.save();
       res.json({
         success : true,
+        message : "successfully made a payment!",
         order : order
       });
     }).catch(e => {

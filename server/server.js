@@ -8,6 +8,7 @@ const express = require("express"),
 
 
 let app = express();
+// app.use(express.static('dist/web'));
 // app.use(bodyParser.json());
 // app.use(bodyParser.urlencoded({extended:false}));
 app.use(bodyParser.json());
@@ -29,6 +30,9 @@ app.use("/api",productsRouter);
 app.use("/api/seller",sellerRouter);
 app.use("/api/search",productsSearchRouter);
 let PORT = process.env.PORT || 3030;
+
+console.log("PORTTT");
+console.log(process.env.PORT);
 
 app.get("*", (req,res,next) => {
   res.send("XD");
